@@ -1,59 +1,68 @@
-<script>
-	import Counter from './Counter.svelte';
-	import welcome from '$lib/images/svelte-welcome.webp';
-	import welcome_fallback from '$lib/images/svelte-welcome.png';
+<script lang="ts">
+	let notes: string[] = [
+		"A",
+		"A#",
+		"B",
+		"C",
+		"C#",
+		"D",
+		"D#",
+		"E",
+		"F",
+		"F#",
+		"G",
+		"G#",
+	];
+
+	let currentNote: string = "pick a note";
+
+	function handleClick(note: string) {
+		currentNote = note;
+	}
 </script>
 
 <svelte:head>
 	<title>Home</title>
 	<meta name="description" content="Svelte demo app" />
 </svelte:head>
-
-<section>
-	<h1>
-		<span class="welcome">
-			<picture>
-				<source srcset={welcome} type="image/webp" />
-				<img src={welcome_fallback} alt="Welcome" />
-			</picture>
-		</span>
-
-		to your new<br />SvelteKit app
-	</h1>
-
-	<h2>
-		try editing <strong>src/routes/+page.svelte</strong>
-	</h2>
-
-	<Counter />
-</section>
+<div class="selected-note">
+	{currentNote}
+</div>
+<div class="grid-container">
+	{#each notes as note}
+		<button on:click={() => handleClick(note)} class="button">
+			{note}
+		</button>
+	{/each}
+</div>
 
 <style>
-	section {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		flex: 0.6;
+	.selected-note {
+		text-align: center;
+		font-size: 24px;
+		margin-bottom: 20px;
+		font-weight: bold;
+	}
+	.grid-container {
+		display: grid;
+		grid-template-columns: repeat(12, 1fr); /* 3 columns */
+		gap: 10px; /* Gap between buttons */
+		padding: 10px;
 	}
 
-	h1 {
-		width: 100%;
+	.button {
+		background-color: #007bff;
+		color: white;
+		border: none;
+		border-radius: 4px;
+		padding: 10px;
+		text-align: center;
+		font-size: 16px;
+		cursor: pointer;
+		transition: background-color 0.3s;
 	}
 
-	.welcome {
-		display: block;
-		position: relative;
-		width: 100%;
-		height: 0;
-		padding: 0 0 calc(100% * 495 / 2048) 0;
-	}
-
-	.welcome img {
-		position: absolute;
-		width: 100%;
-		height: 100%;
-		top: 0;
-		display: block;
+	.button:hover {
+		background-color: #0056b3;
 	}
 </style>
